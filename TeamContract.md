@@ -39,6 +39,7 @@ This contract sets out shared expectations and commitments for how our team will
 * No can abstaining from votes in the case of a tie.
 ---
 ### Work Quality
+
 * All deliverables should be completed on time, tested, and meet the agreed quality standard.
 
 * Members agree to review each other’s work constructively.
