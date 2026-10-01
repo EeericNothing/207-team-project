@@ -23,6 +23,8 @@ This contract sets out shared expectations and commitments for how our team will
 * Team members will respond to messages within **24** hours on weekdays.
 
 * All communication will remain respectful and constructive.
+
+* Scheduling will be done at least 24hrs ahead if able.
 ---
 ### Attendance & Participation
 
@@ -57,6 +59,7 @@ By signing below, we acknowledge that we have read, discussed, and agreed to the
 ## Team Member Signatures:
 
 - Shawn Yu
--
--
-- 
+- Berk Akbay
+- Ishaan Kellar
+- Mingfei (Eric) He
+- Rocky Shi
