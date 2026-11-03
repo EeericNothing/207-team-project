@@ -11,3 +11,17 @@ The readme should include information such as:
 By keeping this README up-to-date,
 your team will find it easier to prepare for the final presentation
 at the end of the term.
+
+Calender and Scheduling App:
+
+Features:
+-Login Page
+-Putting Holidays and Special Dates on the calender
+-Set up Availability ( Maybe select the timespaces that you are available)
+-Scheduling Meetings (Assigning people to meetings if they are available)
+-Filtering (Users/People) --> Tag People and Search by Tags
+-Categorizing Events/People 
+-Showing the Meeting Link in the Event Description (Person Scheduling the meeting will have a box where he/she can paste their google meet link)
+
+API:
+-Google Calender API
