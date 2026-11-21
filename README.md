@@ -181,6 +181,37 @@ Postconditions:
 
 ### Use Case 12: Join Events
 
+### Use Case 13: View Event
+
+Primary actor: Logged-in user
+
+Goal: See everything about an event, so that the user knows what it is, when it takes place and who else is going.
+
+Preconditions: The user is logged in and is viewing a calendar they belong to, and that calendar has at least one event.
+
+Trigger: The user selects an event.
+
+Main success scenario:
+
+1. The user selects an event from the calendar.
+2. The system shows the event's name, description, start time and end time.
+3. The system shows who is attending the event.
+4. The system indicates whether the user themselves is attending it.
+5. The user closes the event and returns to the calendar.
+
+Extensions / failure flows:
+
+- 1a. The event was removed by someone else since the calendar was last shown: The system reports that the event no longer exists and refreshes the calendar.
+- 2a. The event cannot be retrieved (e.g. the service is unreachable): The system reports that the event cannot be shown and the user stays on the calendar.
+- 2b. The event has no description: The system shows the remaining details and leaves the description empty.
+- 3a. Nobody has joined the event yet: The system states that the event has no attendees.
+- 4a. The user is not attending the event: The system offers the user the option to join it.
+
+Postconditions:
+
+- The user has seen the details of the event.
+- Nothing is changed by viewing: the event, its list of attendees and the user's own availability all stay as they were.
+
 ### 
 
 
