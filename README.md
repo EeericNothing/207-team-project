@@ -50,7 +50,7 @@ calendar so that I don't have to spend my own efforts
 
 Primary actor: New user
 
-Goal: Create a personal account so that the user can be scheduled with by their group.
+Success Outcome: Create a personal account so that the user can be scheduled with by their group.
 
 Preconditions: The user is on the sign-up screen and does not yet have an account.
 
@@ -81,7 +81,7 @@ Postconditions
 
 Primary actor: Registered user
 
-Goal: Access the user’s own calendar and their group’s availability.
+Success Outcome: Access the user’s own calendar and their group’s availability.
 
 Preconditions: The user has an account and is on the log-in screen.
 
@@ -111,7 +111,7 @@ Postconditions
 
 Primary actor: Logged-in user
 
-Goal: End the session so that another person can use the program on the same machine.
+Success Outcome: End the session so that another person can use the program on the same machine.
 
 Preconditions: A user is logged in.
 
@@ -137,8 +137,52 @@ Postconditions
 ### Use Case 6: Join Calendar
 
 ### Use Case 7: Leave Calendar
+Primary Actor: Logged-in User with Calendar
+
+Success Outcome: The Specified Calendar no longer shows up for the user
+
+Preconditions: 
+- User is logged in
+- User is a part of the calendar they want to leave
+
+Trigger: User Selects Leave Calendar
+
+Main Success Scenario:
+
+1. The User clicks "Leave Calendar"
+2. The system removes the user from the calendar
+3. The system removes the user from all events on said calendar
+4. The system returns the user to the main screen
+
+Extensions/ failure flows:
+- None, there shouldn't be a "Leave Calendar" button in the first place if the user is not in said event
+
+Postconditions: 
+- the user is no longer able to see/is part of the calendar they wanted to leave and is no longer part of the events in the calendar
 
 ### Use Case 8: Calendar View
+Primary Actor: Logged-in User with Calendar
+
+Success Outcome: The user sees the Calendar they wanted to view
+
+Preconditions:
+- the user is logged in
+- user is a part of the calendar they want ot leave
+
+Trigger: User clicks the calendar they want to view
+
+Main Success Scenario:
+
+1. User clicks the Calendar they want to view
+2. The system retrieves the information about the calendar
+3. The system builds the view for the calendar
+4. The systems shows the User the calendar with the calendar information
+
+Extensions/ failure flows:
+- None, they should not be able to click a calendar they have not joined, the system should always build the calendar correctly
+
+Postconditions:
+- the user sees the information of the calendar they selected
 
 ### Use Case 9: Adding Events
 
@@ -165,7 +209,7 @@ Postconditions
 attendingEvents: ArrayList<event>, availability: ArrayList<array[2]>)
 ### Event: 
 (eventID: int, eventName: string, description: string,
-startTime: java.time, endTime, java.time)
+startTime: java.time, endTime, java.time, Final Author: User)
 ### GlobalCalendar: 
 (calendarID: int, calendarName: string, calendarPassword: string, 
 users: ArrayList[User], events: ArrayList[Event])
