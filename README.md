@@ -57,23 +57,25 @@ Preconditions: The user is on the sign-up screen and does not yet have an accoun
 Trigger: The user submits the sign-up form.
 
 Main success scenario:
-1. The user enters a username, a password, and a repeated password.
+1. The user enters a username, an email address, a password, and a repeated password.
 2. The user submits the form.
 3. The system verifies that no account with that username exists.
-4. The system verifies that the two passwords match.
-5. The system creates the account and stores it.
-6. The system confirms the account was created and takes the user to the log-in screen.
+4. The system verifies that the email address has the form of a real address.
+5. The system verifies that the two passwords match.
+6. The system creates the account, records the email address it will use to reach the user, and stores it.
+7. The system confirms the account was created and takes the user to the log-in screen.
 
 Extensions / failure flows
 
-- 1a. Username or password is empty: The system reports which field is required and does not create an account.
+- 1a. A required field is empty: The system reports which field is required and does not create an account.
 - 3a. Username already taken: The system reports that the username is unavailable and leaves the entered data on screen so the user can change only the username.
-- 4a. Passwords do not match: The system reports the mismatch and clears both password fields.
-- 5a. The account cannot be stored (e.g. the service is unreachable): The system reports that sign-up failed and that no account was created, so the user can retry.
+- 4a. The email address is not a valid address: The system reports that the address cannot be used and leaves the rest of the entered data on screen.
+- 5a. Passwords do not match: The system reports the mismatch and clears both password fields.
+- 6a. The account cannot be stored (e.g. the service is unreachable): The system reports that sign-up failed and that no account was created, so the user can retry.
 
 Postconditions
 
-- Success: an account exists and persists across restarts of the program; the user is not yet logged in.
+- Success: an account exists with an email address recorded for it, and it persists across restarts of the program; the user is not yet logged in.
 - Failure: no account is created and no partial data is stored.
 
 
@@ -274,9 +276,9 @@ Postconditions:
 
 Primary actor: Logged-in user
 
-Success outcome: Create a new event on the global calendar.
+Success outcome: Create a new event on the shared calendar.
 
-Preconditions: The user is logged in and on the global calendar.
+Preconditions: The user is logged in and on the shared calendar.
 
 Trigger: The user selects "New Event".
 
@@ -285,23 +287,23 @@ Main success scenario
 1. The user select a block of time on the calendar.
 2. The user selects “New Event”.
 2. The system shows a window that allow the user to set the information about the event (Name, Description, Time).
-3. The event is shown on the global calendar. 
+3. The event is shown on the shared calendar. 
 
 Extensions / failure flows
 
 - 2a. If no time is selected: The system display an "Invalid Time Selected" Error.
 
 Postconditions
-- The event is on the global calendar allowing other user to see and join it.
+- The event is on the shared calendar allowing other user to see and join it.
 - The user is the author of the event
 
 ### Use Case 10: Modifying Events
 
 Primary actor: Logged-in user who created the event
 
-Success outcome: The details of the event (Name, Description, Time) is updated and shown on the global calendar. 
+Success outcome: The details of the event (Name, Description, Time) is updated and shown on the shared calendar. 
 
-Preconditions: The user is logged in and on the global calendar and is the author of the event.
+Preconditions: The user is logged in and on the shared calendar and is the author of the event.
 
 Trigger: The user selects "Edit" while viewing an event.
 
@@ -311,14 +313,14 @@ Main success scenario
 2. The user can edit the name and description by typing in the text field. 
 2. The user can select a new block of time on the calendar to edit the time of the event. 
 3. The user can select save to save the new details, or cancel to return to the event view. 
-4. The event is shown on the global calendar with the new fields.
+4. The event is shown on the shared calendar with the new fields.
 
 Extensions / failure flows
 
 - 3a. Cancel is selected: The changes are discarded and the user returns to the event view.
 
 Postconditions
-- The event is on the global calendar showing new details for all users.
+- The event is on the shared calendar showing new details for all users.
 
 ### Use Case 11: Deleting Events
 
@@ -356,7 +358,7 @@ Trigger: The user selects the event and clicks join event to add themselves.
 
 Main success scenario
 
-1. The user enters clicks on the event in the global calendar and clicks join in the event popup.
+1. The user enters clicks on the event in the shared calendar and clicks join in the event popup.
 2. The system finds event and adds them to the attendee lst.
 3. The system updates the user's calendar to reflect the added event in their personal calendar.
 
@@ -505,12 +507,14 @@ Postconditions:
 ## Entities
 ### User: 
 (userID: int, username: string, userPassword: string, email: string, 
-attendingEvents: ArrayList<event>, availability: ArrayList<array[2]>)
+attendingEvents: ArrayList<event>, availability: ArrayList<TimeSlot>)
+### TimeSlot: 
+(start: LocalDateTime, end: LocalDateTime)
 ### Event: 
 (eventID: int, eventName: string, description: string,
 startTime: java.time, endTime, java.time, Final Author: User
 attendees: ArrayList<User>)
-### GlobalCalendar: 
+### SharedCalendar: 
 (calendarID: int, calendarName: string, calendarPassword: string, 
 users: ArrayList[User], events: ArrayList[Event])
 
