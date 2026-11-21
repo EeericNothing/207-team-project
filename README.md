@@ -427,7 +427,69 @@ Postconditions:
 
 ### Use Case 15: Filter Calendars to see user availability
 
-### Use Case 16: Notify when event details change
+Primary actor: Logged-in user
+
+Goal: The filter shows the availabilities of a user or users depending on what filters are applied.
+
+Preconditions: The user is logged in and is viewing a calendar they belong to.
+
+Trigger: The user selects a drop down menu and clicks the filters they want to apply.
+
+Main success scenario:
+
+1. The user selects the filter button at the top of the calendar.
+2. The user selects the filters (people) whose availabilities they want to see.
+3. The system updates the calendar to show the heat map for the availabilities of the users in the filter.
+
+Extensions / failure flows:
+
+- 2a. Adding additional filters on top of those of people.
+
+Postconditions:
+
+- The filters that the user selects are applied to the calendar so the user can see the desired availabilities.
+
+### Use Case 16: Notify When Event Details Change
+
+Primary actor: Attendee of an event
+
+Supporting actor: The email service
+
+Goal: Find out that an event the user joined has changed or been cancelled, without having to open the app and check.
+
+Preconditions: The event exists and has at least one attendee other than the person making the change. Every account has an email address recorded.
+
+Trigger: Someone changes the details of an event, or the owner of an event leaves it.
+
+Main success scenario (details changed):
+
+1. A user changes the details of an event.
+2. The system saves the change.
+3. The system determines who is attending the event.
+4. The system leaves out the user who made the change, since they already know about it.
+5. The system sends every remaining attendee an email saying that "event name" details have been changed, and to check the app to see the changes.
+6. The attendee receives the email and opens the app to see what is different.
+
+Alternate flow (event cancelled):
+
+1. The owner of an event leaves it.
+2. The event is cancelled, as an event cannot exist without its owner.
+3. The system determines who was attending the event.
+4. The system leaves out the owner.
+5. The system sends every remaining attendee an email saying that "event name" has been cancelled.
+6. The attendee receives the email and knows the event is no longer happening.
+
+Extensions / failure flows:
+
+- 1a. The same event is changed several times in a row: Each confirmed change sends its own email, so attendees are never told about a change they were not sent.
+- 3a. The event has no attendees other than the person who made the change: No email is sent, and the change still takes effect.
+- 5a. An attendee has no email address recorded: The remaining attendees are still emailed, and the system records that this attendee could not be notified.
+- 5b. The email service is unreachable: The change to the event, or its cancellation, stays in effect, and the system records that the attendees could not be notified. A failure to notify never undoes the change itself.
+
+Postconditions:
+
+- Success: Every attendee except the person who made the change has been sent an email about it. Sending the notification leaves the event, its attendees and everyone's availability unchanged.
+- Failure: The change or cancellation still stands, and the system has a record of which attendees could not be notified.
 
 
 ---
