@@ -496,9 +496,11 @@ Postconditions:
 ## Minimal Viable Product (MVP)
 | Team Member | MVP Use Case |
 |-------------|--------------|
-| Name | Use Case |
-| Name | Use Case |
-| Name | Use Case |
+| Eric | Use Case |
+| Shawn | Use Case |
+| Rocky | Use Case |
+| Berk | Use Case |
+| Ishaan | Use Case |
 ---
 ## Entities
 ### User: 
@@ -506,7 +508,8 @@ Postconditions:
 attendingEvents: ArrayList<event>, availability: ArrayList<array[2]>)
 ### Event: 
 (eventID: int, eventName: string, description: string,
-startTime: java.time, endTime, java.time, Final Author: User)
+startTime: java.time, endTime, java.time, Final Author: User
+attendees: ArrayList<User>)
 ### GlobalCalendar: 
 (calendarID: int, calendarName: string, calendarPassword: string, 
 users: ArrayList[User], events: ArrayList[Event])
