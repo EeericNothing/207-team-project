@@ -130,10 +130,27 @@ Extensions / failure flows
 Postconditions
 - No current user is set, and no other user’s data is visible on screen.
 
-### Use Case 4:
+### Use Case 4: Set Up Own Availability
 
+### Use Case 5: Create Calendar
 
+### Use Case 6: Join Calendar
 
+### Use Case 7: Leave Calendar
+
+### Use Case 8: Calendar View
+
+### Use Case 9: Adding Events
+
+### Use Case 10: Modifying Events
+
+### Use Case 11: Deleting Events
+
+### Use Case 12: Assigning Users To Events
+
+### Use Case 13: Accept Event Assignment
+
+### 
 
 
 ---
