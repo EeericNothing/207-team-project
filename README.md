@@ -320,7 +320,51 @@ Postconditions
 
 ### Use Case 11: Deleting Events
 
+Primary actor: Logged-in user who created the event.
+
+Goal: Delete an event the user created.
+
+Preconditions: The user is looking to delete a preexisting event they've created.
+
+Trigger: The user clicks on the event and presses the delete event button.
+
+Main success scenario
+1. The user selects an event on the calendar.
+2. The selected event is one the user created.
+3. The user clicks the delete event button.
+4. The system deletes the event entity.
+5. All instances of this event in this user and other users who are attached to this event are freed in this time block.
+   Extension / failure flows
+
+2a. If the user did not create the event, the system notifies the users and prevents them from deleting.
+
+Postconditions
+
+- Success: The user was able to delete the event and all users attached to that event have this event removed from their calendars.
+- Failure: The system remains unchanged because the user did not have permission to delete the event.
+
 ### Use Case 12: Join Events
+
+Goal: Join an existing event on the calendar.
+
+Preconditions: The user is logged in and added to a calendar which contains the event they want to join.
+
+Trigger: The user selects the event and clicks join event to add themselves.
+
+Main success scenario
+
+1. The user enters clicks on the event in the global calendar and clicks join in the event popup.
+2. The system finds event and adds them to the attendee lst.
+3. The system updates the user's calendar to reflect the added event in their personal calendar.
+
+Extensions / failure flows
+
+- 2a. If the user is already attending the event the system blocks out the join button and notifies them they're already attending
+- 3a. If the user cannot be added to an event the event remains unchanged and no changes are made to the user's personal calendar.
+
+Postconditions
+- Success: The user joins an event and this is reflected in the event itself and the user's calendar.
+- Failure: The user is unable to join the event, the event is unchanged and no changes are made to the user's calendar.
 
 ### Use Case 13: View Event
 
