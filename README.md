@@ -293,6 +293,7 @@ Extensions / failure flows
 
 Postconditions
 - The event is on the global calendar allowing other user to see and join it.
+- The user is the author of the event
 
 ### Use Case 10: Modifying Events
 
@@ -300,7 +301,7 @@ Primary actor: Logged-in user who created the event
 
 Success outcome: The details of the event (Name, Description, Time) is updated and shown on the global calendar. 
 
-Preconditions: The user is logged in and on the global calendar and viewing an event.
+Preconditions: The user is logged in and on the global calendar and is the author of the event.
 
 Trigger: The user selects "Edit" while viewing an event.
 
