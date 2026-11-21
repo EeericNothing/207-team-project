@@ -402,6 +402,29 @@ Postconditions:
 
 ### Use Case 14: Leave Event
 
+Primary actor: Logged-in user who is in an event
+
+Goal: Leave an event.
+
+Preconditions: The user is logged in and is a participant of the event.
+
+Trigger: The user selects leave event.
+
+Main success scenario:
+
+1. The user selects the leave event button when viewing an event.
+2. The user is removed from the list of participants of the event.
+3. the user's availability is unblocked for the event time.
+
+Extensions / failure flows:
+
+- 2a. Author Leaves: If the user is the author of the event, then the event is deleted. 
+
+Postconditions:
+
+- The user is no longer in the list participants of the event. 
+- The event is no longer in the list of event the user is participating in. 
+
 ### Use Case 15: Filter Calendars to see user availability
 
 ### Use Case 16: Notify when event details change
