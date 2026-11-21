@@ -66,9 +66,9 @@ Main success scenario:
 
 Extensions / failure flows
 
+- 1a. Username or password is empty: The system reports which field is required and does not create an account.
 - 3a. Username already taken: The system reports that the username is unavailable and leaves the entered data on screen so the user can change only the username.
 - 4a. Passwords do not match: The system reports the mismatch and clears both password fields.
-- 1a. Username or password is empty: The system reports which field is required and does not create an account.
 - 5a. The account cannot be stored (e.g. the service is unreachable): The system reports that sign-up failed and that no account was created, so the user can retry.
 
 Postconditions
@@ -98,10 +98,10 @@ Main success scenario:
 
 Extensions / failure flows:
 
-- 3a. No such account: The system reports that the account was not found and offers to go to the sign-up screen.
-- 4a. Incorrect password: The system reports that the password is incorrect and clears the password field only.
 - 1a. Empty field: The system reports which field is required.
+- 3a. No such account: The system reports that the account was not found and offers to go to the sign-up screen.
 - 3b/4b. The account information cannot be retrieved: The system reports that log-in is temporarily unavailable and the user stays on the log-in screen.
+- 4a. Incorrect password: The system reports that the password is incorrect and clears the password field only.
 
 Postconditions
 
@@ -146,9 +146,7 @@ Postconditions
 
 ### Use Case 11: Deleting Events
 
-### Use Case 12: Assigning Users To Events
-
-### Use Case 13: Accept Event Assignment
+### Use Case 12: Join Events
 
 ### 
 
