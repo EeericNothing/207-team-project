@@ -498,11 +498,11 @@ Postconditions:
 ## Minimal Viable Product (MVP)
 | Team Member | MVP Use Case |
 |-------------|--------------|
-| Eric | Use Case |
-| Shawn | Use Case |
-| Rocky | Use Case |
-| Berk | Use Case |
-| Ishaan | Use Case |
+| Eric | 5,6,7 |
+| Shawn | 9,10,11,12,14 |
+| Rocky | 8,13 |
+| Berk | 1,2,3 |
+| Ishaan | 4,15,16 |
 ---
 ## Entities
 ### User: 
