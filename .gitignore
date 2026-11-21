@@ -37,3 +37,13 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Project-specific — never commit these ###
+# API keys and local configuration (e.g. the AI API key for user story 5)
+config.properties
+*.local
+.env
+
+# Local data written by the file-based persistence layer
+data/
+*.csv.bak
