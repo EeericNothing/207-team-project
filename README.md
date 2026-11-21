@@ -404,6 +404,28 @@ Postconditions:
 
 ### Use Case 15: Filter Calendars to see user availability
 
+Primary actor: Logged-in user
+
+Goal: The filter shows the availabilities of a user or users depending on what filters are applied.
+
+Preconditions: The user is logged in and is viewing a calendar they belong to.
+
+Trigger: The user selects a drop down menu and clicks the filters they want to apply.
+
+Main success scenario:
+
+1. The user selects the filter button at the top of the calendar.
+2. The user selects the filters (people) whose availabilities they want to see.
+3. The system updates the calendar to show the heat map for the availabilities of the users in the filter.
+
+Extensions / failure flows:
+
+- 2a. Adding additional filters on top of those of people.
+
+Postconditions:
+
+- The filters that the user selects are applied to the calendar so the user can see the desired availabilities.
+
 ### Use Case 16: Notify when event details change
 
 
