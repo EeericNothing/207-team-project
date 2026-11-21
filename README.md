@@ -167,7 +167,59 @@ Postconditions:
 
 ### Use Case 5: Create Calendar
 
+Primary actor: Logged-in user
+
+Goal: Start a shared calendar where a group can schedule events.
+
+Preconditions: The user is logged in and can access the main calendar screen.
+
+Trigger: The user selects “Create calendar”.
+
+Main success scenario
+
+1. The user enters a calendar name and chooses a calendar password.
+2. The user selects “Create”.
+3. The system assigns a unique calendar ID and saves the calendar with the creator as its first member.
+4. The system opens the empty calendar and shows its ID so the creator can share it with the group.
+
+Extensions / failure flows
+
+- 2a. If either field is blank, the system identifies the missing field and lets the user complete the form.
+- 3a. If the calendar and its initial membership cannot be saved together, the system reports the failure and offers a retry.
+
+Postconditions
+
+- Success: The creator can reopen the calendar after logging in again. Other users can join with its ID and calendar password (Use Case 6).
+- Failure: No partial calendar or membership is saved.
+
 ### Use Case 6: Join Calendar
+
+Primary actor: Logged-in user
+
+Goal: Become a member of an existing group calendar so the user can view its schedule.
+
+Preconditions: The user is logged in. A group member has shared the calendar ID and calendar password with them.
+
+Trigger: The user selects “Join calendar”.
+
+Main success scenario
+
+1. The user enters the calendar ID and calendar password, then selects “Join”.
+2. The system finds the calendar and verifies its password.
+3. The system adds the user to the calendar’s member list and saves the membership.
+4. The system opens the shared calendar and displays its existing events, if any.
+
+Extensions / failure flows
+
+- 1a. If a field is blank or the ID is not a number, the system asks the user to correct the entry.
+- 2a. If the ID and password do not match a calendar, the system asks the user to check both entries before trying again.
+- 3a. If the user is already a member, the system opens the calendar using their existing membership.
+- 3b. If the membership cannot be saved, the system reports that joining failed and lets the user retry.
+
+Postconditions
+
+- Success: The user appears once in the member list and can reopen the calendar after logging in again.
+- Failure: The member list is unchanged and the attempted join grants no access.
 
 ### Use Case 7: Leave Calendar
 Primary Actor: Logged-in User with Calendar
