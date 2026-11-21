@@ -235,12 +235,13 @@ Trigger: User Selects Leave Calendar
 Main Success Scenario:
 
 1. The User clicks "Leave Calendar"
-2. The system removes the user from the calendar
-3. The system removes the user from all events on said calendar
+2. The system removes the user from all events on said calendar 
+3. The system removes the user from the calendar
 4. The system returns the user to the main screen
 
 Extensions/ failure flows:
-- None, there shouldn't be a "Leave Calendar" button in the first place if the user is not in said event
+- 2a, see use case 11
+- 3a, if the user is the last person in the calendar delete the calendar object too
 
 Postconditions: 
 - the user is no longer able to see/is part of the calendar they wanted to leave and is no longer part of the events in the calendar
