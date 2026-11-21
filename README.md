@@ -502,7 +502,7 @@ Postconditions:
 ---
 ## Entities
 ### User: 
-(userID: int, username: string, userPassword: string, 
+(userID: int, username: string, userPassword: string, email: string, 
 attendingEvents: ArrayList<event>, availability: ArrayList<array[2]>)
 ### Event: 
 (eventID: int, eventName: string, description: string,
