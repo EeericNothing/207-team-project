@@ -30,19 +30,17 @@ A calendar app that allows you to schedule events with other people, and filter 
 ---
 ## User Stories
 ### User Story 1
-As a user I want to be able to login to my own account and
-see my group's availability and my own availability so that I know when people are available
+As a user, I want to create an account, log in, and log out so I can access my calendars and end my session when I’m done.
 ### User Story 2
-As a user I want to be able to be able fill in my own availability
-so that other people can plan around me
+As a user, I want to create a shared calendar, join one using an ID and password, and leave one I no longer need so I can choose which groups I schedule with.
 ### User Story 3
-As a user I want to be able to create events and assign people who are available so that you can plan events
+As a calendar member, I want to open a shared calendar and view an event’s time, details, and attendees so I can decide whether to attend.
 ### User Story 4
-As a user I want to be able to filter users and events by categories so
-that I can more clearly see when things are happening
+As a calendar member, I want to create, edit, or cancel events I organize and join or leave other members’ events so I can coordinate plans with my group.
 ### User Story 5
-As a user I want to know when changes are made to my events by notification
-so that I can plan my own life around it
+As a user, I want to mark when I’m free and update my availability so my group can plan around my schedule.
+### User Story 6
+As an event attendee, I want an email when an event I’m attending changes or is cancelled so I can adjust my plans.
 
 ---
 ## Use Cases
@@ -507,16 +505,16 @@ Postconditions:
 ## Entities
 ### User: 
 (userID: int, username: string, userPassword: string, email: string, 
-attendingEvents: ArrayList<event>, availability: ArrayList<TimeSlot>)
+attendingEvents: ArrayList<event>, availability: ArrayList<TimeSlot>, calendars: ArrayList<SharedCalendar>)
 ### TimeSlot: 
 (start: LocalDateTime, end: LocalDateTime)
 ### Event: 
 (eventID: int, eventName: string, description: string,
 startTime: java.time, endTime, java.time, Final Author: User
-attendees: ArrayList<User>)
+attendees: ArrayListInt)
 ### SharedCalendar: 
 (calendarID: int, calendarName: string, calendarPassword: string, 
-users: ArrayList[User], events: ArrayList[Event])
+users: ArrayListInt, events: ArrayList[Event])
 
 ---
 ## API Usage
