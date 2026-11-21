@@ -142,7 +142,52 @@ Postconditions
 
 ### Use Case 9: Adding Events
 
+Primary actor: Logged-in user
+
+Success outcome: Create a new event on the global calendar.
+
+Preconditions: The user is logged in and on the global calendar.
+
+Trigger: The user selects "New Event".
+
+Main success scenario
+
+1. The user select a block of time on the calendar.
+2. The user selects “New Event”.
+2. The system shows a window that allow the user to set the information about the event (Name, Description, Time).
+3. The event is shown on the global calendar. 
+
+Extensions / failure flows
+
+- 2a. If no time is selected: The system display an "Invalid Time Selected" Error.
+
+Postconditions
+- The event is on the global calendar allowing other user to see and join it.
+
 ### Use Case 10: Modifying Events
+
+Primary actor: Logged-in user who created the event
+
+Success outcome: The details of the event (Name, Description, Time) is updated and shown on the global calendar. 
+
+Preconditions: The user is logged in and on the global calendar and viewing an event.
+
+Trigger: The user selects "Edit" while viewing an event.
+
+Main success scenario
+
+1. The user selects "Edit".
+2. The user can edit the name and description by typing in the text field. 
+2. The user can select a new block of time on the calendar to edit the time of the event. 
+3. The user can select save to save the new details, or cancel to return to the event view. 
+4. The event is shown on the global calendar with the new fields.
+
+Extensions / failure flows
+
+- 3a. Cancel is selected: The changes are discarded and the user returns to the event view.
+
+Postconditions
+- The event is on the global calendar showing new details for all users.
 
 ### Use Case 11: Deleting Events
 
