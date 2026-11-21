@@ -142,23 +142,23 @@ Trigger: The user chooses to edit their availability.
 Main success scenario:
 
 1. The user opens their own availability for a chosen period.
-2. The system shows the availability the user has already recorded for that period.
-3. The user marks a time range during which they are free by giving its start and end.
-4. The system verifies that the range is valid, that is, the end comes after the start.
-5. The system adds the range to the user's availability for that period.
-6. The user repeats steps 3–5 for any other free ranges, and may remove a range they recorded earlier.
+2. The system shows the period as a grid of time slots, with the slots the user has already recorded as free shown as selected.
+3. The user marks the times they are free by selecting slots on the grid, either one slot at a time or by dragging across a range of slots.
+4. The system shows each slot as free as soon as it is selected, so the user can see the result while selecting.
+5. The user unselects slots they no longer want to be free, in the same way.
+6. The user repeats steps 3-5 until the grid matches when they are actually free.
 7. The user confirms the changes.
 8. The system saves the updated availability and confirms that it was saved.
 9. The user's availability is now visible to the other members of their calendar.
 
 Extensions / failure flows:
 
-- 3a. The user gives an end that is not after the start: The system reports the problem and does not record the range.
-- 3b. The new range overlaps or touches a range the user already recorded: The system combines them into a single continuous range, so the same free time is never stored twice.
-- 3c. The new range covers a time at which the user is already attending an event: The system warns the user that they are marking themselves free during an event they joined, and lets the user either keep or discard the range.
-- 6a. The user removes a range during which they are attending an event: The system warns that the event falls outside their availability, and the event itself is left unchanged.
+- 3a. The user drags across slots that are already selected: The system treats the whole dragged range as free, so the same free time is never recorded twice.
+- 3b. The user drags past the edge of the period shown: The selection stops at the last slot of the period, and no time outside it is recorded.
+- 3c. The user selects a slot at which they are already attending an event: The system warns the user that they are marking themselves free during an event they joined, and lets the user either keep or undo the selection.
+- 5a. The user unselects a slot at which they are attending an event: The system warns that the event falls outside their availability, and the event itself is left unchanged.
 - 7a. The user cancels instead of confirming: The system discards the changes and the previously saved availability stays in effect.
-- 8a. The availability cannot be saved (e.g. the service is unreachable): The system reports that the change was not saved, keeps the user's entries on screen so nothing is retyped, and the previously saved availability stays in effect.
+- 8a. The availability cannot be saved (e.g. the service is unreachable): The system reports that the change was not saved, leaves the grid as the user left it so nothing has to be selected again, and the previously saved availability stays in effect.
 
 Postconditions:
 
