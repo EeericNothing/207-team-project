@@ -41,8 +41,8 @@ As a user I want to be able to create events and assign people who are available
 As a user I want to be able to filter users and events by categories so
 that I can more clearly see when things are happening
 ### User Story 5
-As a user I want to be able to ask the AI window questions about my
-calendar so that I don't have to spend my own efforts
+As a user I want to know when changes are made to my events by notification
+so that I can plan my own life around it
 
 ---
 ## Use Cases
@@ -336,7 +336,8 @@ Main success scenario
 3. The user clicks the delete event button.
 4. The system deletes the event entity.
 5. All instances of this event in this user and other users who are attached to this event are freed in this time block.
-   Extension / failure flows
+
+Extension / failure flows
 
 2a. If the user did not create the event, the system notifies the users and prevents them from deleting.
 
@@ -361,7 +362,7 @@ Main success scenario
 
 Extensions / failure flows
 
-- 2a. If the user is already attending the event the system blocks out the join button and notifies them they're already attending
+- 2a. If the user is already attending the event the system shows the leave event button instead of the join event button see use case 14
 - 3a. If the user cannot be added to an event the event remains unchanged and no changes are made to the user's personal calendar.
 
 Postconditions
@@ -399,7 +400,11 @@ Postconditions:
 - The user has seen the details of the event.
 - Nothing is changed by viewing: the event, its list of attendees and the user's own availability all stay as they were.
 
-### 
+### Use Case 14: Leave Event
+
+### Use Case 15: Filter Calendars to see user availability
+
+### Use Case 16: Notify when event details change
 
 
 ---
