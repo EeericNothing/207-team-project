@@ -61,6 +61,11 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         logInButton.addActionListener(this);
         toSignupButton.addActionListener(this);
 
+        // Pressing Enter in either box logs in, so the user does not have to reach
+        // for the button after typing the password.
+        usernameInputField.addActionListener(this);
+        passwordInputField.addActionListener(this);
+
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(title);
         this.add(errorField);
@@ -85,17 +90,25 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
     @Override
     public void actionPerformed(ActionEvent evt) {
-        if (evt.getSource().equals(logInButton)) {
-            final LoginState typed = loginViewModel.getState();
-            typed.setUsername(usernameInputField.getText());
-
-            loginController.execute(
-                    usernameInputField.getText(),
-                    new String(passwordInputField.getPassword()));
-        }
-        else if (evt.getSource().equals(toSignupButton)) {
+        if (evt.getSource().equals(toSignupButton)) {
             loginController.switchToSignupView();
         }
+        else {
+            // The log-in button, or Enter pressed in one of the boxes.
+            submit();
+        }
+    }
+
+    /**
+     * Asks for the user on screen to be logged in.
+     */
+    private void submit() {
+        final LoginState typed = loginViewModel.getState();
+        typed.setUsername(usernameInputField.getText());
+
+        loginController.execute(
+                usernameInputField.getText(),
+                new String(passwordInputField.getPassword()));
     }
 
     @Override

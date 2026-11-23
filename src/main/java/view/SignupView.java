@@ -64,6 +64,13 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         signUpButton.addActionListener(this);
         toLoginButton.addActionListener(this);
 
+        // Pressing Enter in any of the boxes submits the form, so the user does not
+        // have to reach for the button after typing the last field.
+        usernameInputField.addActionListener(this);
+        emailInputField.addActionListener(this);
+        passwordInputField.addActionListener(this);
+        repeatPasswordInputField.addActionListener(this);
+
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(title);
         this.add(errorField);
@@ -90,21 +97,29 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
 
     @Override
     public void actionPerformed(ActionEvent evt) {
-        if (evt.getSource().equals(signUpButton)) {
-            // Remember what was typed, so a failed attempt does not make the user type it again.
-            final SignupState typed = signupViewModel.getState();
-            typed.setUsername(usernameInputField.getText());
-            typed.setEmail(emailInputField.getText());
-
-            signupController.execute(
-                    usernameInputField.getText(),
-                    emailInputField.getText(),
-                    new String(passwordInputField.getPassword()),
-                    new String(repeatPasswordInputField.getPassword()));
-        }
-        else if (evt.getSource().equals(toLoginButton)) {
+        if (evt.getSource().equals(toLoginButton)) {
             signupController.switchToLoginView();
         }
+        else {
+            // The sign-up button, or Enter pressed in one of the boxes.
+            submit();
+        }
+    }
+
+    /**
+     * Asks for an account to be created from what is on screen.
+     */
+    private void submit() {
+        // Remember what was typed, so a failed attempt does not make the user type it again.
+        final SignupState typed = signupViewModel.getState();
+        typed.setUsername(usernameInputField.getText());
+        typed.setEmail(emailInputField.getText());
+
+        signupController.execute(
+                usernameInputField.getText(),
+                emailInputField.getText(),
+                new String(passwordInputField.getPassword()),
+                new String(repeatPasswordInputField.getPassword()));
     }
 
     @Override
