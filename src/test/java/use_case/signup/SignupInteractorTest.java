@@ -170,7 +170,7 @@ class SignupInteractorTest {
     /**
      * A presenter that remembers what it was told, so a test can check it.
      */
-    private static class RecordingPresenter implements SignupOutputBoundary {
+    private static final class RecordingPresenter implements SignupOutputBoundary {
 
         private boolean succeeded;
         private boolean askedForLoginView;

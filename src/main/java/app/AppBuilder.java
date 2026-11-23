@@ -9,6 +9,8 @@ import javax.swing.WindowConstants;
 
 import data_access.InMemoryUserDataAccessObject;
 import data_access.PlainTextPasswordHasher;
+import data_access.SupabaseClient;
+import data_access.SupabaseUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
@@ -22,6 +24,8 @@ import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
 import use_case.PasswordHasher;
+import use_case.login.LoginUserDataAccessInterface;
+import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -31,6 +35,7 @@ import use_case.logout.LogoutOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
+import use_case.signup.SignupUserDataAccessInterface;
 import view.LoggedInView;
 import view.LoginView;
 import view.SignupView;
@@ -58,7 +63,15 @@ public class AppBuilder {
 
     private final UserFactory userFactory = new CommonUserFactory();
     private final PasswordHasher passwordHasher = new PlainTextPasswordHasher();
-    private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+
+    /**
+     * Where accounts live. One object serves all three use cases, because it
+     * implements all three of their interfaces; which object it is, is decided here
+     * and nowhere else.
+     */
+    private final SignupUserDataAccessInterface signupDataAccess;
+    private final LoginUserDataAccessInterface loginDataAccess;
+    private final LogoutUserDataAccessInterface logoutDataAccess;
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
@@ -67,9 +80,29 @@ public class AppBuilder {
     private LoggedInView loggedInView;
     private LoggedInViewModel loggedInViewModel;
 
-    // TODO(persistence): pass a Supabase data access object in place of the in-memory one
-
+    /**
+     * Chooses where accounts are stored and prepares the window.
+     *
+     * <p>Accounts go to Supabase when config.properties names a project. Without that
+     * file the program runs against storage that lasts only as long as the program,
+     * so a teammate who does not have the key can still work on their own screens.</p>
+     */
     public AppBuilder() {
+        final AppConfig config = AppConfig.load();
+        if (config.hasSupabase()) {
+            final SupabaseUserDataAccessObject supabase = new SupabaseUserDataAccessObject(
+                    new SupabaseClient(config.getSupabaseUrl(), config.getSupabaseKey()), userFactory);
+            signupDataAccess = supabase;
+            loginDataAccess = supabase;
+            logoutDataAccess = supabase;
+        }
+        else {
+            final InMemoryUserDataAccessObject inMemory = new InMemoryUserDataAccessObject();
+            signupDataAccess = inMemory;
+            loginDataAccess = inMemory;
+            logoutDataAccess = inMemory;
+        }
+
         new ViewManager(cardPanel, cardLayout, viewManagerModel);
     }
 
@@ -118,7 +151,7 @@ public class AppBuilder {
         final SignupOutputBoundary signupPresenter =
                 new SignupPresenter(signupViewModel, viewManagerModel, loginViewModel.getViewName());
         final SignupInputBoundary signupInteractor =
-                new SignupInteractor(userDataAccessObject, signupPresenter, userFactory, passwordHasher);
+                new SignupInteractor(signupDataAccess, signupPresenter, userFactory, passwordHasher);
         signupView.setSignupController(new SignupController(signupInteractor));
         return this;
     }
@@ -132,7 +165,7 @@ public class AppBuilder {
         final LoginOutputBoundary loginPresenter =
                 new LoginPresenter(loginViewModel, loggedInViewModel, viewManagerModel, signupViewModel.getViewName());
         final LoginInputBoundary loginInteractor =
-                new LoginInteractor(userDataAccessObject, loginPresenter, passwordHasher);
+                new LoginInteractor(loginDataAccess, loginPresenter, passwordHasher);
         loginView.setLoginController(new LoginController(loginInteractor));
         return this;
     }
@@ -146,7 +179,7 @@ public class AppBuilder {
         final LogoutOutputBoundary logoutPresenter =
                 new LogoutPresenter(loggedInViewModel, loginViewModel, viewManagerModel);
         final LogoutInputBoundary logoutInteractor =
-                new LogoutInteractor(userDataAccessObject, logoutPresenter);
+                new LogoutInteractor(logoutDataAccess, logoutPresenter);
         loggedInView.setLogoutController(new LogoutController(logoutInteractor));
         return this;
     }

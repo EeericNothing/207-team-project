@@ -31,7 +31,7 @@ class LogoutInteractorTest {
     /**
      * A presenter that remembers what it was told, so a test can check it.
      */
-    private static class RecordingPresenter implements LogoutOutputBoundary {
+    private static final class RecordingPresenter implements LogoutOutputBoundary {
 
         private boolean succeeded;
         private String username;
