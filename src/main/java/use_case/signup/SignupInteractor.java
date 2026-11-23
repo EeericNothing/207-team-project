@@ -1,7 +1,5 @@
 package use_case.signup;
 
-import java.util.regex.Pattern;
-
 import entity.User;
 import entity.UserFactory;
 import use_case.PasswordHasher;
@@ -10,8 +8,6 @@ import use_case.PasswordHasher;
  * The sign-up use case: the rules an account has to satisfy before it is created.
  */
 public class SignupInteractor implements SignupInputBoundary {
-
-    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[^\s@]+@[^\s@]+\.[^\s@]+$");
 
     private static final String EMPTY_FIELD = "Please fill in every field.";
     private static final String USERNAME_TAKEN = "That username is already taken.";
@@ -56,7 +52,7 @@ public class SignupInteractor implements SignupInputBoundary {
         else if (userDataAccessObject.existsByName(username)) {
             userPresenter.prepareFailView(USERNAME_TAKEN);
         }
-        else if (!EMAIL_PATTERN.matcher(email).matches()) {
+        else if (!looksLikeAnEmailAddress(email)) {
             userPresenter.prepareFailView(MALFORMED_EMAIL);
         }
         else if (userDataAccessObject.existsByEmail(email)) {
@@ -75,6 +71,24 @@ public class SignupInteractor implements SignupInputBoundary {
     @Override
     public void switchToLoginView() {
         userPresenter.switchToLoginView();
+    }
+
+    /**
+     * Checks that the given text has the shape of an email address: something, then a
+     * single at sign, then a domain with a dot that is neither first nor last.
+     *
+     * @param email the text the user gave
+     * @return true if it could be an email address
+     */
+    private static boolean looksLikeAnEmailAddress(String email) {
+        final int at = email.indexOf('@');
+        final int lastAt = email.lastIndexOf('@');
+        final int lastDot = email.lastIndexOf('.');
+        return at > 0
+                && at == lastAt
+                && lastDot > at + 1
+                && lastDot < email.length() - 1
+                && email.indexOf(' ') < 0;
     }
 
     private static boolean isMissing(String value) {

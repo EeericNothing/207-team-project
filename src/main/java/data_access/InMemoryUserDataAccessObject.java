@@ -37,4 +37,14 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     public void save(User user) {
         users.put(user.getName(), user);
     }
+
+    /**
+     * Returns the stored user with the given username.
+     *
+     * @param username the username to look up
+     * @return the user, or null if no account has that username
+     */
+    public User get(String username) {
+        return users.get(username);
+    }
 }
