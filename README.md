@@ -510,11 +510,11 @@ attendingEvents: ArrayList<event>, availability: ArrayList<TimeSlot>, calendars:
 (start: LocalDateTime, end: LocalDateTime)
 ### Event: 
 (eventID: int, eventName: string, description: string,
-startTime: java.time, endTime, java.time, Final Author: User
+Time: TimeSlot, Final Author: User
 attendees: ArrayListInt)
 ### SharedCalendar: 
 (calendarID: int, calendarName: string, calendarPassword: string, 
-users: ArrayListInt, events: ArrayList[Event])
+userIDs: Set, events: ArrayList[Event])
 
 ---
 ## API Usage
