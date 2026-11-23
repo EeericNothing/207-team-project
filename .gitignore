@@ -44,6 +44,9 @@ config.properties
 *.local
 .env
 
+# Written by the shade plugin on every package; not source
+dependency-reduced-pom.xml
+
 # Local data written by the file-based persistence layer
 data/
 *.csv.bak
