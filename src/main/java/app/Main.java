@@ -25,8 +25,11 @@ public final class Main {
         SwingUtilities.invokeLater(() -> {
             final JFrame application = new AppBuilder()
                     .addSignupView()
-                    .addLoginPlaceholderView()
+                    .addLoginView()
+                    .addLoggedInView()
                     .addSignupUseCase()
+                    .addLoginUseCase()
+                    .addLogoutUseCase()
                     .build();
             application.setVisible(true);
         });

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import entity.User;
+import use_case.login.LoginUserDataAccessInterface;
+import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
 /**
@@ -12,9 +14,11 @@ import use_case.signup.SignupUserDataAccessInterface;
  * <p>Nothing here outlives the program, so this is what the tests run against and what
  * the rest of the team can build on before the Supabase implementation is ready.</p>
  */
-public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterface {
+public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterface,
+        LoginUserDataAccessInterface, LogoutUserDataAccessInterface {
 
     private final Map<String, User> users = new HashMap<>();
+    private String currentUsername;
 
     @Override
     public boolean existsByName(String username) {
@@ -38,13 +42,18 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         users.put(user.getName(), user);
     }
 
-    /**
-     * Returns the stored user with the given username.
-     *
-     * @param username the username to look up
-     * @return the user, or null if no account has that username
-     */
+    @Override
     public User get(String username) {
         return users.get(username);
+    }
+
+    @Override
+    public String getCurrentUsername() {
+        return currentUsername;
+    }
+
+    @Override
+    public void setCurrentUsername(String username) {
+        this.currentUsername = username;
     }
 }
