@@ -1,0 +1,14 @@
+# Copy this file to config.properties and fill in the two values from Supabase.
+#
+#   config.properties is ignored by git and must never be committed.
+#   Ask Berk for the real values in the team chat, not in the repository.
+#
+# Project Settings -> API keys in the Supabase dashboard:
+#   supabase.url  is the Project URL,            e.g. https://abcdefghijkl.supabase.co
+#   supabase.key  is the publishable (anon) key, e.g. sb_publishable_xxxxxxxxxxxx
+#
+# Never put the secret (service_role) key here: it bypasses every access rule
+# and is only ever used by a server, never by a program handed to users.
+
+supabase.url=https://YOUR-PROJECT-REF.supabase.co
+supabase.key=YOUR-PUBLISHABLE-KEY
