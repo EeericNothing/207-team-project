@@ -531,7 +531,24 @@ information about our users and calendars**
 ### Sequence Diagrams
 ---
 ## How to Run
-[Instructions for running the program.]
+
+You need Java 11 or newer and Maven.
+
+1. Copy `config.properties.example` to `config.properties` and fill in the two
+   Supabase values. Ask the team for them; they are not in the repository.
+   Without this file the program still runs, but accounts last only as long as
+   the program does.
+2. Build and start it:
+
+       mvn clean package
+       java -jar target/TeamProject-1.0-SNAPSHOT.jar
+
+   From IntelliJ you can instead run `app.Main` directly.
+
+To see the style report and the tests on their own:
+
+       mvn test
+       mvn checkstyle:check
 ---
 ## Notes
 [Any additional project information.]
