@@ -1,6 +1,7 @@
 package use_case.login;
 
 import entity.User;
+import use_case.DataAccessException;
 import use_case.PasswordHasher;
 
 /**
@@ -17,6 +18,7 @@ public class LoginInteractor implements LoginInputBoundary {
      * log-in screen to find out which accounts exist.</p>
      */
     private static final String REFUSED = "Incorrect username or password.";
+    private static final String UNAVAILABLE = "Logging in is unavailable right now. Please try again.";
 
     private final LoginUserDataAccessInterface userDataAccessObject;
     private final LoginOutputBoundary loginPresenter;
@@ -45,18 +47,30 @@ public class LoginInteractor implements LoginInputBoundary {
         if (isMissing(username) || isMissing(password)) {
             loginPresenter.prepareFailView(EMPTY_FIELD);
         }
-        else if (!userDataAccessObject.existsByName(username)) {
-            loginPresenter.prepareFailView(REFUSED);
+        else {
+            try {
+                logIn(username, password);
+            }
+            catch (DataAccessException exception) {
+                loginPresenter.prepareFailView(UNAVAILABLE);
+            }
+        }
+    }
+
+    /**
+     * Logs the user in if the account exists and the password matches it.
+     *
+     * @param username the username given
+     * @param password the password typed
+     */
+    private void logIn(String username, String password) {
+        final User user = userDataAccessObject.get(username);
+        if (user != null && user.getPassword().equals(passwordHasher.hash(password))) {
+            userDataAccessObject.setCurrentUsername(username);
+            loginPresenter.prepareSuccessView(new LoginOutputData(username));
         }
         else {
-            final User user = userDataAccessObject.get(username);
-            if (user.getPassword().equals(passwordHasher.hash(password))) {
-                userDataAccessObject.setCurrentUsername(username);
-                loginPresenter.prepareSuccessView(new LoginOutputData(username));
-            }
-            else {
-                loginPresenter.prepareFailView(REFUSED);
-            }
+            loginPresenter.prepareFailView(REFUSED);
         }
     }
 

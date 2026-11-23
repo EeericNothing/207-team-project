@@ -11,6 +11,8 @@ import data_access.InMemoryUserDataAccessObject;
 import data_access.PlainTextPasswordHasher;
 import entity.CommonUserFactory;
 import entity.UserFactory;
+import entity.User;
+import use_case.DataAccessException;
 import use_case.PasswordHasher;
 
 /**
@@ -129,6 +131,40 @@ class SignupInteractorTest {
         interactor().switchToLoginView();
 
         assertTrue(presenter.askedForLoginView);
+    }
+
+    @Test
+    void theEmailIsStoredInOneCaseWhateverTheUserTyped() {
+        signUp(USERNAME, "Berk@Example.COM", PASSWORD, PASSWORD);
+
+        assertTrue(presenter.succeeded, presenter.errorMessage);
+        assertEquals(EMAIL, userDataAccessObject.get(USERNAME).getEmail());
+    }
+
+    @Test
+    void aStorageFailureLeavesNoAccountAndSaysSo() {
+        final SignupUserDataAccessInterface brokenStorage = new SignupUserDataAccessInterface() {
+            @Override
+            public boolean existsByName(String username) {
+                return false;
+            }
+
+            @Override
+            public boolean existsByEmail(String email) {
+                return false;
+            }
+
+            @Override
+            public void save(User user) {
+                throw new DataAccessException("the service is unreachable");
+            }
+        };
+
+        new SignupInteractor(brokenStorage, presenter, userFactory, passwordHasher)
+                .execute(new SignupInputData(USERNAME, EMAIL, PASSWORD, PASSWORD));
+
+        assertFalse(presenter.succeeded);
+        assertTrue(presenter.errorMessage.contains("no account was created"), presenter.errorMessage);
     }
 
     /**

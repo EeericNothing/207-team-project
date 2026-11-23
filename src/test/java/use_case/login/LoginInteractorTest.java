@@ -12,6 +12,8 @@ import data_access.InMemoryUserDataAccessObject;
 import data_access.PlainTextPasswordHasher;
 import entity.CommonUserFactory;
 import entity.UserFactory;
+import entity.User;
+import use_case.DataAccessException;
 import use_case.PasswordHasher;
 
 /**
@@ -105,6 +107,27 @@ class LoginInteractorTest {
         new LoginInteractor(userDataAccessObject, presenter, passwordHasher).switchToSignupView();
 
         assertTrue(presenter.askedForSignupView);
+    }
+
+    @Test
+    void storageThatCannotBeReachedSaysSoRatherThanRefusingTheUser() {
+        final LoginUserDataAccessInterface brokenStorage = new LoginUserDataAccessInterface() {
+            @Override
+            public User get(String username) {
+                throw new DataAccessException("the service is unreachable");
+            }
+
+            @Override
+            public void setCurrentUsername(String username) {
+                throw new DataAccessException("the service is unreachable");
+            }
+        };
+
+        new LoginInteractor(brokenStorage, presenter, passwordHasher)
+                .execute(new LoginInputData(USERNAME, PASSWORD));
+
+        assertFalse(presenter.succeeded);
+        assertTrue(presenter.errorMessage.contains("unavailable"), presenter.errorMessage);
     }
 
     /**

@@ -1,7 +1,10 @@
 package use_case.signup;
 
+import java.util.Locale;
+
 import entity.User;
 import entity.UserFactory;
+import use_case.DataAccessException;
 import use_case.PasswordHasher;
 
 /**
@@ -15,6 +18,8 @@ public class SignupInteractor implements SignupInputBoundary {
     private static final String EMAIL_TAKEN =
             "An account with that email address already exists. Please log in instead.";
     private static final String PASSWORDS_DIFFER = "The two passwords do not match.";
+    private static final String COULD_NOT_STORE =
+            "Sign-up failed and no account was created. Please try again.";
 
     private final SignupUserDataAccessInterface userDataAccessObject;
     private final SignupOutputBoundary userPresenter;
@@ -42,7 +47,7 @@ public class SignupInteractor implements SignupInputBoundary {
     @Override
     public void execute(SignupInputData signupInputData) {
         final String username = signupInputData.getUsername();
-        final String email = signupInputData.getEmail();
+        final String email = normalise(signupInputData.getEmail());
         final String password = signupInputData.getPassword();
         final String repeatPassword = signupInputData.getRepeatPassword();
 
@@ -63,8 +68,13 @@ public class SignupInteractor implements SignupInputBoundary {
         }
         else {
             final User user = userFactory.create(username, email, passwordHasher.hash(password));
-            userDataAccessObject.save(user);
-            userPresenter.prepareSuccessView(new SignupOutputData(username));
+            try {
+                userDataAccessObject.save(user);
+                userPresenter.prepareSuccessView(new SignupOutputData(username));
+            }
+            catch (DataAccessException exception) {
+                userPresenter.prepareFailView(COULD_NOT_STORE);
+            }
         }
     }
 
@@ -80,6 +90,25 @@ public class SignupInteractor implements SignupInputBoundary {
      * @param email the text the user gave
      * @return true if it could be an email address
      */
+    /**
+     * Puts an email address into the one form this program stores it in.
+     *
+     * <p>An address identifies a single account however it is capitalised, so it is
+     * lowered here rather than at each place that compares one. Locale.ROOT is used
+     * deliberately: in a Turkish locale the default would turn "I" into a dotless
+     * letter and two spellings of the same address would stop matching.</p>
+     *
+     * @param email the address as the user typed it
+     * @return the address as it is stored and compared
+     */
+    private static String normalise(String email) {
+        String normalised = email;
+        if (normalised != null) {
+            normalised = normalised.trim().toLowerCase(Locale.ROOT);
+        }
+        return normalised;
+    }
+
     private static boolean looksLikeAnEmailAddress(String email) {
         final int at = email.indexOf('@');
         final int lastAt = email.lastIndexOf('@');
