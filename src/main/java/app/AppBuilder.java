@@ -9,6 +9,21 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
+import data_access.InMemoryUserDataAccessObject;
+import data_access.PlainTextPasswordHasher;
+import entity.CommonUserFactory;
+import entity.UserFactory;
+import interface_adapter.ViewManagerModel;
+import interface_adapter.signup.SignupController;
+import interface_adapter.signup.SignupPresenter;
+import interface_adapter.signup.SignupViewModel;
+import use_case.PasswordHasher;
+import use_case.signup.SignupInputBoundary;
+import use_case.signup.SignupInteractor;
+import use_case.signup.SignupOutputBoundary;
+import view.SignupView;
+import view.ViewManager;
+
 /**
  * Assembles the application.
  *
@@ -16,11 +31,8 @@ import javax.swing.WindowConstants;
  * concrete data access objects, interactors, presenters and views. Every other class
  * receives what it needs through its constructor and depends on interfaces only, which
  * is what keeps the Dependency Rule of Clean Architecture intact: swapping the
- * persistence implementation, for instance, is a one-line change here and nowhere
- * else.</p>
- *
- * <p>Views are shown inside a single {@link CardLayout} panel, so a use case can switch
- * the visible screen by name without knowing anything about the other screens.</p>
+ * persistence implementation, or the way passwords are stored, is a one-line change
+ * here and nowhere else.</p>
  */
 public class AppBuilder {
 
@@ -28,15 +40,66 @@ public class AppBuilder {
     private static final int WIDTH = 900;
     private static final int HEIGHT = 600;
 
+    /** The name of the log-in screen. Only a placeholder stands there for now. */
+    private static final String LOGIN_VIEW_NAME = "log in";
+
     private final CardLayout cardLayout = new CardLayout();
     private final JPanel cardPanel = new JPanel(cardLayout);
+    private final ViewManagerModel viewManagerModel = new ViewManagerModel();
 
-    // TODO(Phase 1): addSignupView() and addSignupUseCase()
-    // TODO(Phase 2): addLoginView(), addLoginUseCase(), addLoggedInView()
-    // TODO(Phase 3): accept a UserDataAccessInterface and inject it into the interactors
+    private final UserFactory userFactory = new CommonUserFactory();
+    private final PasswordHasher passwordHasher = new PlainTextPasswordHasher();
+    private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+
+    private SignupView signupView;
+    private SignupViewModel signupViewModel;
+
+    // TODO(Use Case 2): replace the placeholder with the real LoginView and its use case
+    // TODO(Use Case 3): add the logout use case
+    // TODO(persistence): pass a Supabase data access object in place of the in-memory one
 
     public AppBuilder() {
-        cardPanel.add(buildPlaceholderView(), "placeholder");
+        new ViewManager(cardPanel, cardLayout, viewManagerModel);
+    }
+
+    /**
+     * Adds the sign-up screen.
+     *
+     * @return this builder
+     */
+    public AppBuilder addSignupView() {
+        signupViewModel = new SignupViewModel();
+        signupView = new SignupView(signupViewModel);
+        cardPanel.add(signupView, signupView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds a stand-in for the log-in screen, so that leaving sign-up already goes
+     * somewhere while Use Case 2 is still being written.
+     *
+     * @return this builder
+     */
+    public AppBuilder addLoginPlaceholderView() {
+        final JPanel placeholder = new JPanel(new BorderLayout());
+        placeholder.add(new JLabel("The log-in screen is Use Case 2.", SwingConstants.CENTER),
+                BorderLayout.CENTER);
+        cardPanel.add(placeholder, LOGIN_VIEW_NAME);
+        return this;
+    }
+
+    /**
+     * Wires the sign-up use case to its screen.
+     *
+     * @return this builder
+     */
+    public AppBuilder addSignupUseCase() {
+        final SignupOutputBoundary signupPresenter =
+                new SignupPresenter(signupViewModel, viewManagerModel, LOGIN_VIEW_NAME);
+        final SignupInputBoundary signupInteractor =
+                new SignupInteractor(userDataAccessObject, signupPresenter, userFactory, passwordHasher);
+        signupView.setSignupController(new SignupController(signupInteractor));
+        return this;
     }
 
     /**
@@ -51,21 +114,10 @@ public class AppBuilder {
         application.setLocationRelativeTo(null);
         application.setLayout(new BorderLayout());
         application.add(cardPanel, BorderLayout.CENTER);
-        return application;
-    }
 
-    /**
-     * A temporary screen shown while no real view has been added yet.
-     *
-     * <p>Delete this method as soon as the signup and login views exist.</p>
-     *
-     * @return a panel with a single explanatory label
-     */
-    private JPanel buildPlaceholderView() {
-        final JPanel panel = new JPanel(new BorderLayout());
-        final JLabel label = new JLabel(
-                "Skeleton is running. Views are registered in AppBuilder.", SwingConstants.CENTER);
-        panel.add(label, BorderLayout.CENTER);
-        return panel;
+        viewManagerModel.setState(signupView.getViewName());
+        viewManagerModel.firePropertyChanged();
+
+        return application;
     }
 }
