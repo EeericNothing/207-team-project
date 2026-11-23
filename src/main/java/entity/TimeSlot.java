@@ -12,4 +12,14 @@ public class TimeSlot {
         this.start = start;
         this.end = end;
     }
+
+    public java.time.LocalDateTime getStart() {
+        return start;
+    }
+    public java.time.LocalDateTime getEnd() {
+        return end;
+    }
+    public java.time.Duration getDuration() {
+        return Duration.between(start, end);
+    }
 }

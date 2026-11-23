@@ -511,10 +511,10 @@ attendingEvents: ArrayList<event>, availability: ArrayList<TimeSlot>, calendars:
 ### Event: 
 (eventID: int, eventName: string, description: string,
 Time: TimeSlot, Final Author: User
-attendees: ArrayListInt)
+attendeeIDs: ArrayListInt)
 ### SharedCalendar: 
 (calendarID: int, calendarName: string, calendarPassword: string, 
-userIDs: Set, events: ArrayList[Event])
+userIDs: Set<int>, eventIDs: ArrayList<int>)
 
 ---
 ## API Usage
