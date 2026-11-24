@@ -3,6 +3,7 @@ package data_access;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import entity.CommonUserFactory;
 import entity.User;
 import entity.UserFactory;
 import use_case.login.LoginUserDataAccessInterface;
@@ -23,6 +24,7 @@ public class SupabaseUserDataAccessObject implements SignupUserDataAccessInterfa
         LoginUserDataAccessInterface, LogoutUserDataAccessInterface {
 
     private static final String TABLE = "users";
+    private static final String ID = "id";
     private static final String USERNAME = "username";
     private static final String EMAIL = "email";
     private static final String PASSWORD = "password";
@@ -53,16 +55,29 @@ public class SupabaseUserDataAccessObject implements SignupUserDataAccessInterfa
         return !client.selectWhereEquals(TABLE, EMAIL, email).isEmpty();
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The identifier is deliberately left out of the row. The database assigns it,
+     * so sending one would either be rejected or overwrite the sequence.</p>
+     */
     @Override
     public void save(User user) {
         final JSONObject row = new JSONObject();
-        row.put(USERNAME, user.getName());
+        row.put(USERNAME, user.getUsername());
         row.put(EMAIL, user.getEmail());
         row.put(PASSWORD, user.getPassword());
 
         client.insert(TABLE, row);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>A row without an identifier column still produces a usable user, with the
+     * identifier left unset. Logging in asks only for a username and a password, so it
+     * keeps working against a table that predates the identifier column.</p>
+     */
     @Override
     public User get(String username) {
         final JSONArray rows = client.selectWhereEquals(TABLE, USERNAME, username);
@@ -73,7 +88,11 @@ public class SupabaseUserDataAccessObject implements SignupUserDataAccessInterfa
         }
         else {
             final JSONObject row = rows.getJSONObject(0);
-            found = userFactory.create(row.getString(USERNAME), row.getString(EMAIL), row.getString(PASSWORD));
+            found = userFactory.createStored(
+                    row.optInt(ID, CommonUserFactory.UNSAVED_ID),
+                    row.getString(USERNAME),
+                    row.getString(EMAIL),
+                    row.getString(PASSWORD));
         }
         return found;
     }

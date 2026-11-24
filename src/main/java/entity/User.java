@@ -1,32 +1,42 @@
 package entity;
 
-/**
- * A person with an account in the application.
- *
- * <p>A user is identified by their username, which is unique across the application.
- * The email address is the one the application writes to when an event the user joined
- * changes or is cancelled.</p>
- */
-public interface User {
+import java.util.ArrayList;
 
-    /**
-     * Returns the username that identifies this user.
-     *
-     * @return the username
-     */
-    String getName();
+public class User {
+    private final int id;
+    private final String username;
+    private final String password;
+    private final String email;
+    private final ArrayList<Event> attendingEvents;
+    private ArrayList<TimeSlot> availability;
+    private ArrayList<SharedCalendar> calendars;
 
-    /**
-     * Returns the email address this user can be reached at.
-     *
-     * @return the email address
-     */
-    String getEmail();
+    public User(int id, String username, String password, String email, ArrayList<Event> attendingEvents) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.attendingEvents = attendingEvents;
+    }
 
-    /**
-     * Returns the password that lets this user log in.
-     *
-     * @return the password, as it is stored
-     */
-    String getPassword();
+    public int getId() {
+        return id;
+    }
+    public String getUsername() {
+        return username;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public Boolean isAttendingEvents(Event event) {
+        for (Event e : attendingEvents) {
+            if (e.equals(event)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
