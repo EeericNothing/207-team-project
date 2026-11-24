@@ -33,7 +33,7 @@ public class User {
     }
     public Boolean isAttendingEvents(Event event) {
         for (Event e : attendingEvents) {
-            if (e.equals(event)) {
+            if (e.getId() == event.getId()) {
                 return true;
             }
         }

@@ -19,7 +19,8 @@ public class Event {
         this.eventDescription = eventDescription;
         this.time = time;
         this.authorID = author.getId();
-        this.attendeeIDs = new HashSet<>(author.getId());
+        this.attendeeIDs = new HashSet<Integer>();
+        this.attendeeIDs.add(author.getId());
     }
 
     public int getId() {
