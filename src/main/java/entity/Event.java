@@ -10,7 +10,7 @@ public class Event {
     private String eventDescription;
     private TimeSlot time;
     private final int authorID;
-    private Set<Integer> attendeeIDs;
+    private final Set<Integer> attendeeIDs;
 
     public Event(int id, String eventName, String eventDescription, TimeSlot time,
                  User author) {
@@ -44,6 +44,20 @@ public class Event {
 
     public Set<Integer> getAttendeeIDs() {
         return attendeeIDs;
+    }
+
+    public void joinEvent(User attendee) {
+        this.attendeeIDs.add(attendee.getId());
+    }
+
+    public void leaveEvent(User attendee) {
+        this.attendeeIDs.remove(attendee.getId());
+    }
+
+    public void modifyEvent(String name, String description, TimeSlot time) {
+        this.eventName = name;
+        this.eventDescription = description;
+        this.time = time;
     }
 
 }
