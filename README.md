@@ -14,7 +14,7 @@ at the end of the term.
 
 Calender and Scheduling App:
 
-# Project Name
+# Project Name: Overlap
 ## Team Information
 ### Team Members
 - Mingfei (Eric) He
