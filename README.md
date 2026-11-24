@@ -351,7 +351,8 @@ Postconditions
 
 Goal: Join an existing event on the calendar.
 
-Preconditions: The user is logged in and added to a calendar which contains the event they want to join.
+Preconditions: The user is logged in and added to a calendar which contains the event they want to join and they are 
+not already an attendee. 
 
 Trigger: The user selects the event and clicks join event to add themselves.
 
@@ -511,8 +512,8 @@ attendingEvents: ArrayList<event>, availability: ArrayList<TimeSlot>, calendars:
 (start: LocalDateTime, end: LocalDateTime)
 ### Event: 
 (eventID: int, eventName: string, description: string,
-Time: TimeSlot, Final Author: User
-attendeeIDs: ArrayListInt)
+Time: TimeSlot, Final authorID: int
+attendeeIDs: Set<int>)
 ### SharedCalendar: 
 (calendarID: int, calendarName: string, calendarPassword: string, 
 userIDs: Set<int>, eventIDs: ArrayList<int>)
