@@ -1,25 +1,39 @@
 package entity;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Duration;
+import java.time.LocalDateTime;
 
+/**
+ * A stretch of time with a start and an end.
+ */
 public class TimeSlot {
-    private java.time.LocalDateTime start;
-    private java.time.LocalDateTime end;
+    private final LocalDateTime start;
+    private final LocalDateTime end;
 
-    public TimeSlot(java.time.LocalDateTime start, java.time.LocalDateTime end) {
+    /**
+     * Creates a time slot.
+     *
+     * @param start when it begins
+     * @param end   when it ends; must be after the start
+     * @throws IllegalArgumentException if either time is missing or the end is not after the start
+     */
+    public TimeSlot(LocalDateTime start, LocalDateTime end) {
+        if (start == null || end == null || !end.isAfter(start)) {
+            throw new IllegalArgumentException("A time slot needs a start and a later end.");
+        }
         this.start = start;
         this.end = end;
     }
 
-    public java.time.LocalDateTime getStart() {
+    public LocalDateTime getStart() {
         return start;
     }
-    public java.time.LocalDateTime getEnd() {
+
+    public LocalDateTime getEnd() {
         return end;
     }
-    public java.time.Duration getDuration() {
+
+    public Duration getDuration() {
         return Duration.between(start, end);
     }
 }

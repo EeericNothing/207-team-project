@@ -47,6 +47,10 @@ public class Event {
         return attendeeIDs;
     }
 
+    public boolean isAttending(User user) {
+        return attendeeIDs.contains(user.getId());
+    }
+
     public void joinEvent(User attendee) {
         this.attendeeIDs.add(attendee.getId());
     }
@@ -61,4 +65,13 @@ public class Event {
         this.time = time;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof Event && ((Event) other).id == id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id);
+    }
 }
