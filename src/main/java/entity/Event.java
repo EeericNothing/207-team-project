@@ -1,6 +1,7 @@
 package entity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Event {
@@ -8,17 +9,17 @@ public class Event {
     private String eventName;
     private String eventDescription;
     private TimeSlot time;
-    private final User author;
+    private final int authorID;
     private Set<Integer> attendeeIDs;
 
     public Event(int id, String eventName, String eventDescription, TimeSlot time,
-                 User author, Set<Integer> attendees) {
+                 User author) {
         this.id = id;
         this.eventName = eventName;
         this.eventDescription = eventDescription;
         this.time = time;
-        this.author = author;
-        this.attendeeIDs = attendees;
+        this.authorID = author.getId();
+        this.attendeeIDs = new HashSet<>(author.getId());
     }
 
     public int getId() {
@@ -38,7 +39,7 @@ public class Event {
     }
 
     public boolean isAuthor(User author) {
-        return this.author.getId() == author.getId();
+        return authorID == author.getId();
     }
 
     public Set<Integer> getAttendeeIDs() {
