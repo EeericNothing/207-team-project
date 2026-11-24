@@ -59,17 +59,19 @@ Main success scenario:
 2. The user submits the form.
 3. The system verifies that no account with that username exists.
 4. The system verifies that the email address has the form of a real address.
-5. The system verifies that the two passwords match.
-6. The system creates the account, records the email address it will use to reach the user, and stores it.
-7. The system confirms the account was created and takes the user to the log-in screen.
+5. The system verifies that no account with that email address exists.
+6. The system verifies that the two passwords match.
+7. The system creates the account, records the email address it will use to reach the user, and stores it.
+8. The system confirms the account was created and takes the user to the log-in screen.
 
 Extensions / failure flows
 
 - 1a. A required field is empty: The system reports which field is required and does not create an account.
 - 3a. Username already taken: The system reports that the username is unavailable and leaves the entered data on screen so the user can change only the username.
 - 4a. The email address is not a valid address: The system reports that the address cannot be used and leaves the rest of the entered data on screen.
-- 5a. Passwords do not match: The system reports the mismatch and clears both password fields.
-- 6a. The account cannot be stored (e.g. the service is unreachable): The system reports that sign-up failed and that no account was created, so the user can retry.
+- 5a. An account already uses that email address: The system reports that an account with that address exists and suggests logging in instead. The user stays on the sign-up screen, where a link takes them to the log-in screen when they choose to go.
+- 6a. Passwords do not match: The system reports the mismatch and clears both password fields.
+- 7a. The account cannot be stored (e.g. the service is unreachable): The system reports that sign-up failed and that no account was created, so the user can retry.
 
 Postconditions
 
@@ -99,9 +101,8 @@ Main success scenario:
 Extensions / failure flows:
 
 - 1a. Empty field: The system reports which field is required.
-- 3a. No such account: The system reports that the account was not found and offers to go to the sign-up screen.
+- 3a/4a. No account has that username, or the password does not match it: The system reports one and the same message for both, without saying which of the two was wrong, so that nobody can use the log-in screen to find out which accounts exist. The password field is cleared and the username is left on screen.
 - 3b/4b. The account information cannot be retrieved: The system reports that log-in is temporarily unavailable and the user stays on the log-in screen.
-- 4a. Incorrect password: The system reports that the password is incorrect and clears the password field only.
 
 Postconditions
 
@@ -530,7 +531,24 @@ information about our users and calendars**
 ### Sequence Diagrams
 ---
 ## How to Run
-[Instructions for running the program.]
+
+You need Java 11 or newer and Maven.
+
+1. Copy `config.properties.example` to `config.properties` and fill in the two
+   Supabase values. Ask the team for them; they are not in the repository.
+   Without this file the program still runs, but accounts last only as long as
+   the program does.
+2. Build and start it:
+
+       mvn clean package
+       java -jar target/TeamProject-1.0-SNAPSHOT.jar
+
+   From IntelliJ you can instead run `app.Main` directly.
+
+To see the style report and the tests on their own:
+
+       mvn test
+       mvn checkstyle:check
 ---
 ## Notes
 [Any additional project information.]

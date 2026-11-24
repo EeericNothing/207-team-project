@@ -55,6 +55,33 @@
             </plugin>
 
             <!--
+              Packages the program and its libraries into one runnable jar, so that
+              `java -jar target/TeamProject-1.0-SNAPSHOT.jar` works without anyone
+              having to assemble a classpath by hand.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer
+                                    implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>app.Main</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--
               Checkstyle. Runs during `mvn verify` and prints every violation, but does not
               fail the build: the course rubric asks for evidence of use, and a hard failure
               would block teammates mid-feature. Run it on demand with:

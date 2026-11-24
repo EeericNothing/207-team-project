@@ -23,7 +23,14 @@ public final class Main {
      */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            final JFrame application = new AppBuilder().build();
+            final JFrame application = new AppBuilder()
+                    .addSignupView()
+                    .addLoginView()
+                    .addLoggedInView()
+                    .addSignupUseCase()
+                    .addLoginUseCase()
+                    .addLogoutUseCase()
+                    .build();
             application.setVisible(true);
         });
     }
