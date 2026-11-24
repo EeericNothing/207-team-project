@@ -190,7 +190,7 @@ Extensions / failure flows
 
 Postconditions
 
-- Success: The creator can reopen the calendar after logging in again. Other users can join with its ID and calendar password (Use Case 6).
+- Success: The Calendar opens after the creator creates it. Other users can join with its ID and calendar password (Use Case 6).
 - Failure: No partial calendar or membership is saved.
 
 ### Use Case 6: Join Calendar
