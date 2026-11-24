@@ -23,6 +23,7 @@ import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import use_case.CurrentUserDataAccessInterface;
 import use_case.PasswordHasher;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
@@ -73,6 +74,12 @@ public class AppBuilder {
     private final LoginUserDataAccessInterface loginDataAccess;
     private final LogoutUserDataAccessInterface logoutDataAccess;
 
+    /**
+     * The same object again, seen as the one question every other use case will ask of
+     * it: who is logged in. A use case that needs the current user takes this.
+     */
+    private final CurrentUserDataAccessInterface currentUserDataAccess;
+
     private SignupView signupView;
     private SignupViewModel signupViewModel;
     private LoginView loginView;
@@ -95,12 +102,14 @@ public class AppBuilder {
             signupDataAccess = supabase;
             loginDataAccess = supabase;
             logoutDataAccess = supabase;
+            currentUserDataAccess = supabase;
         }
         else {
             final InMemoryUserDataAccessObject inMemory = new InMemoryUserDataAccessObject();
             signupDataAccess = inMemory;
             loginDataAccess = inMemory;
             logoutDataAccess = inMemory;
+            currentUserDataAccess = inMemory;
         }
 
         new ViewManager(cardPanel, cardLayout, viewManagerModel);

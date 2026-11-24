@@ -18,7 +18,12 @@ public interface LoginUserDataAccessInterface {
     /**
      * Records who is now using the program.
      *
-     * @param username the username of the user who logged in
+     * <p>The whole account is recorded rather than its username, because logging in has
+     * just read it out of storage and the use cases that follow need the identifier it
+     * carries. Passing the username alone would throw that away and make every later
+     * use case ask storage for it again.</p>
+     *
+     * @param user the user who logged in
      */
-    void setCurrentUsername(String username);
+    void setCurrentUser(User user);
 }

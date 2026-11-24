@@ -66,20 +66,27 @@ public class SupabaseClient {
     }
 
     /**
-     * Adds a row to a table.
+     * Adds a row to a table and returns it as it was stored.
+     *
+     * <p>The stored row is worth having back, because it carries what the database
+     * filled in rather than the caller: the identifier above all. Asking for it is
+     * what the Prefer header does; without it the server answers with an empty body
+     * and the identifier it just assigned is lost.</p>
      *
      * @param table the table to write to
      * @param row   the row to add
+     * @return the row as stored, including the columns the database filled in
      */
-    public void insert(String table, JSONObject row) {
+    public JSONArray insert(String table, JSONObject row) {
         final Request request = new Request.Builder()
                 .url(tableUrl(table).build())
                 .post(RequestBody.create(row.toString(), JSON_TYPE))
                 .header("apikey", apiKey)
                 .header("Content-Type", "application/json")
+                .header("Prefer", "return=representation")
                 .build();
 
-        send(request);
+        return readArray(request);
     }
 
     private HttpUrl.Builder tableUrl(String table) {

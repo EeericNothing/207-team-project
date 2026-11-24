@@ -66,7 +66,7 @@ public class LoginInteractor implements LoginInputBoundary {
     private void logIn(String username, String password) {
         final User user = userDataAccessObject.get(username);
         if (user != null && user.getPassword().equals(passwordHasher.hash(password))) {
-            userDataAccessObject.setCurrentUsername(username);
+            userDataAccessObject.setCurrentUser(user);
             loginPresenter.prepareSuccessView(new LoginOutputData(username));
         }
         else {

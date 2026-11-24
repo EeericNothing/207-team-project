@@ -50,7 +50,18 @@ class LoginInteractorTest {
 
         assertTrue(presenter.succeeded, "log-in should have succeeded: " + presenter.errorMessage);
         assertEquals(USERNAME, presenter.username);
-        assertEquals(USERNAME, userDataAccessObject.getCurrentUsername());
+        assertEquals(USERNAME, userDataAccessObject.getCurrentUser().getUsername());
+    }
+
+    @Test
+    void loggingInRecordsTheWholeAccountAndNotJustTheName() {
+        logIn(USERNAME, PASSWORD);
+
+        final User loggedIn = userDataAccessObject.getCurrentUser();
+        assertEquals(USERNAME, loggedIn.getUsername());
+        assertEquals(EMAIL, loggedIn.getEmail());
+        assertTrue(loggedIn.getId() > 0,
+                "the session must carry the identifier, because the entities refer to people by it");
     }
 
     @Test
@@ -58,7 +69,7 @@ class LoginInteractorTest {
         logIn(USERNAME, "not the password");
 
         assertFalse(presenter.succeeded);
-        assertNull(userDataAccessObject.getCurrentUsername());
+        assertNull(userDataAccessObject.getCurrentUser());
     }
 
     @Test
@@ -66,7 +77,7 @@ class LoginInteractorTest {
         logIn("nobody", PASSWORD);
 
         assertFalse(presenter.succeeded);
-        assertNull(userDataAccessObject.getCurrentUsername());
+        assertNull(userDataAccessObject.getCurrentUser());
     }
 
     @Test
@@ -88,7 +99,7 @@ class LoginInteractorTest {
 
         assertFalse(presenter.succeeded);
         assertEquals("Please fill in every field.", presenter.errorMessage);
-        assertNull(userDataAccessObject.getCurrentUsername());
+        assertNull(userDataAccessObject.getCurrentUser());
     }
 
     @Test
@@ -118,7 +129,7 @@ class LoginInteractorTest {
             }
 
             @Override
-            public void setCurrentUsername(String username) {
+            public void setCurrentUser(User user) {
                 throw new DataAccessException("the service is unreachable");
             }
         };

@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import data_access.InMemoryUserDataAccessObject;
+import entity.CommonUserFactory;
 
 /**
  * Tests the rules of Use Case 3, Log Out.
@@ -18,12 +19,13 @@ class LogoutInteractorTest {
     @Test
     void loggingOutLeavesNobodyLoggedIn() {
         final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
-        userDataAccessObject.setCurrentUsername(USERNAME);
+        userDataAccessObject.setCurrentUser(
+                new CommonUserFactory().createStored(1, USERNAME, "berk@example.com", "password"));
         final RecordingPresenter presenter = new RecordingPresenter();
 
         new LogoutInteractor(userDataAccessObject, presenter).execute(new LogoutInputData(USERNAME));
 
-        assertNull(userDataAccessObject.getCurrentUsername());
+        assertNull(userDataAccessObject.getCurrentUser());
         assertTrue(presenter.succeeded);
         assertEquals(USERNAME, presenter.username);
     }

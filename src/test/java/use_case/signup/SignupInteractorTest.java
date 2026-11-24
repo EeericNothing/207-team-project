@@ -2,6 +2,7 @@ package use_case.signup;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -63,6 +64,25 @@ class SignupInteractorTest {
 
         assertTrue(presenter.succeeded);
         assertEquals("hashed:" + PASSWORD, userDataAccessObject.get(USERNAME).getPassword());
+    }
+
+    @Test
+    void aStoredAccountIsGivenAnIdentifier() {
+        signUp(USERNAME, EMAIL, PASSWORD, PASSWORD);
+
+        assertTrue(presenter.succeeded);
+        assertTrue(userDataAccessObject.get(USERNAME).getId() > 0,
+                "a stored account should carry the identifier storage gave it");
+    }
+
+    @Test
+    void twoAccountsAreGivenDifferentIdentifiers() {
+        signUp(USERNAME, EMAIL, PASSWORD, PASSWORD);
+        signUp("someone", "someone@example.com", PASSWORD, PASSWORD);
+
+        assertNotEquals(userDataAccessObject.get(USERNAME).getId(),
+                userDataAccessObject.get("someone").getId(),
+                "two accounts must not share an identifier: the entities tell people apart by it");
     }
 
     @Test
@@ -155,7 +175,7 @@ class SignupInteractorTest {
             }
 
             @Override
-            public void save(User user) {
+            public User save(User user) {
                 throw new DataAccessException("the service is unreachable");
             }
         };
