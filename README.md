@@ -21,7 +21,7 @@ Calender and Scheduling App:
 - Rocky Shi
 - Shawn Yu
 - Berk Akbay
-- Ishaan Kellar
+- Ishaan Kelkar
 ---
 ## Project Description
 ### Domain
